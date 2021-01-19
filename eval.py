@@ -198,7 +198,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         img_seg = img_gpu * seg_masks.prod(dim=0)
         img_seg = (img_seg * 255).byte().cpu().numpy()
         cv2.imwrite(seg_path, img_seg)
-        break
+        return
         # seg_masks[seg_masks==1] = 2
         # seg_masks[seg_masks==0] = 1
         # seg_masks[seg_masks==2] = 0
