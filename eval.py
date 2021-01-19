@@ -195,8 +195,6 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         
         # TESTING
         seg_masks = copy.deepcopy(masks)
-        img_seg = img_gpu * seg_masks.prod(dim=0)
-        # img_seg = (img_seg * 255).byte().cpu().numpy()
         # seg_masks[seg_masks==1] = 2
         # seg_masks[seg_masks==0] = 1
         # seg_masks[seg_masks==2] = 0
@@ -219,6 +217,9 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
             masks_color_summand += masks_color_cumul.sum(dim=0)
 
         # img_gpu = img_gpu * inv_alph_masks.prod(dim=0) + masks_color_summand
+        # TESTING
+        img_seg = img_gpu * seg_masks.prod(dim=0)
+        # TESTING
 
     if args.display_fps:
             # Draw the box for the fps on the GPU
