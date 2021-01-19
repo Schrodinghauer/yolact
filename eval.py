@@ -10,6 +10,9 @@ import pycocotools
 
 from data import cfg, set_cfg, set_dataset
 
+import pdb
+import copy
+
 import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
@@ -190,6 +193,13 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         # After this, mask is of size [num_dets, h, w, 1]
         masks = masks[:num_dets_to_consider, :, :, None]
         
+        # TESTING
+        seg_masks = copy.deepcopy(masks)
+        seg_masks[seg_masks==1] = 2
+        seg_masks[seg_masks==0] = 1
+        seg_masks[seg_masks==2] = 0
+        # TESTING
+
         # Prepare the RGB images for each mask given their color (size [num_dets, h, w, 1])
         colors = torch.cat([get_color(j, on_gpu=img_gpu.device.index).view(1, 1, 1, 3) for j in range(num_dets_to_consider)], dim=0)
         masks_color = masks.repeat(1, 1, 1, 3) * colors * mask_alpha
@@ -206,8 +216,11 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
             masks_color_cumul = masks_color[1:] * inv_alph_cumul
             masks_color_summand += masks_color_cumul.sum(dim=0)
 
-        img_gpu = img_gpu * inv_alph_masks.prod(dim=0) + masks_color_summand
-    
+        # img_gpu = img_gpu * inv_alph_masks.prod(dim=0) + masks_color_summand
+        # TESTING
+        img_gpu = img_gpu * seg_masks.prod(dim=0)
+        # TESTING
+
     if args.display_fps:
             # Draw the box for the fps on the GPU
         font_face = cv2.FONT_HERSHEY_DUPLEX
