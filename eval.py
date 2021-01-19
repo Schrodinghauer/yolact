@@ -195,9 +195,9 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         
         # TESTING
         seg_masks = copy.deepcopy(masks)
-        seg_masks[seg_masks==1] = 2
-        seg_masks[seg_masks==0] = 1
-        seg_masks[seg_masks==2] = 0
+        # seg_masks[seg_masks==1] = 2
+        # seg_masks[seg_masks==0] = 1
+        # seg_masks[seg_masks==2] = 0
         # TESTING
 
         # Prepare the RGB images for each mask given their color (size [num_dets, h, w, 1])
