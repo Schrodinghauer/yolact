@@ -218,7 +218,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
 
         # img_gpu = img_gpu * inv_alph_masks.prod(dim=0) + masks_color_summand
         # TESTING
-        img_seg = img_gpu * seg_masks.prod(dim=0)
+        img_gpu = img_gpu * seg_masks.prod(dim=0)
         # TESTING
 
     if args.display_fps:
