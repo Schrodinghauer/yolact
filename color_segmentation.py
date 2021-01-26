@@ -91,7 +91,7 @@ def kmeans_seg(img, filename, outputpath):
 # 		kmeans_seg(image, filename, outputpath)
 
 # HSV based dominant color extraction
-img = cv2.imread('/Users/yiyi/vsr-api-2/vsr-api/data/image/sample/10105197_10105197_1.jpg')
+img = cv2.imread('/Users/yiyi/vsr-api-2/vsr-api/api/alpha/dataset/10160545.jpg')
 height, width, _ = np.shape(img)
 
 # reshape the image to be a simple list of RGB pixels
@@ -113,8 +113,6 @@ bars = []
 hsv_values = []
 for index, rows in enumerate(combined):
     bar, rgb, hsv = make_bar(100, 100, rows[1])
-    if hsv == (0, 0, 254):
-    	continue
     print(f'Bar {index + 1}')
     print(f'  RGB values: {rgb}')
     print(f'  HSV values: {hsv}')
@@ -127,17 +125,19 @@ for index, rows in enumerate(combined):
 # sorted_bars = [bars[idx] for idx in sorted_bar_indexes]
 
 # cv2.imshow('Sorted by HSV values', np.hstack(sorted_bars))
-# cv2.imshow(f'{num_clusters} Most Common Colors', np.hstack(bars))
+cv2.imshow(f'{num_clusters} Most Common Colors', np.hstack(bars))
 # cv2.waitKey(0)
-mc_hsv = hsv_values[0]
-upper = tuple((mc_hsv[0]+12., 255., 255.))
-lower = tuple((mc_hsv[0]-12., 0., 0.))
-# pdb.set_trace()
-hsv_img = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
-mask = cv2.inRange(hsv_img, lower, upper)
-result = cv2.bitwise_and(img, img, mask=mask)
-plt.subplot(1, 2, 1)
-plt.imshow(mask, cmap="gray")
-plt.subplot(1, 2, 2)
-plt.imshow(result)
-plt.show()
+
+for mc_hsv in hsv_values:
+	upper = tuple((mc_hsv[0]+1., 225., 225.))
+	lower = tuple((mc_hsv[0]-1., 30., 30.))
+	# pdb.set_trace()
+	hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+	mask = cv2.inRange(hsv_img, lower, upper)
+	result = cv2.bitwise_and(img, img, mask=mask)
+	result = cv2.cvtColor(result, cv2.COLOR_BGR2RGB)
+	plt.subplot(1, 2, 1)
+	plt.imshow(mask, cmap="gray")
+	plt.subplot(1, 2, 2)
+	plt.imshow(result)
+	plt.show()
