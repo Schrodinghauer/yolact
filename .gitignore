@@ -153,7 +153,9 @@ scripts/aws3/
 data/config_dev.py
 data/coco/
 data/sbd/
-
+output/
+output1/
+output2/
 vid/
 vidres/
 
