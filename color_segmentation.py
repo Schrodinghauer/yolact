@@ -54,6 +54,11 @@ def sort_hsvs(hsv_list):
 
 
 def load_images_from_folder(folder):
+	"""
+	Load images by OpenCV. 
+	:param folder: String, path of the source folder.
+	:return: List of OpenCV images, List of filenames corresponding to the images.
+	"""
     images = []
     filenames = []
     for filename in os.listdir(folder):
@@ -65,6 +70,13 @@ def load_images_from_folder(folder):
 
 
 def kmeans_seg(img, filename, outputpath):
+	"""
+	Run K-means for color reduction based segmentation.
+	:param: OpenCV images
+	:param: Filenames
+	:param: Output folder path
+	:return: None
+	"""
 	Z = img.reshape((-1,3))
 
 	# convert to np.float32
@@ -91,14 +103,14 @@ def kmeans_seg(img, filename, outputpath):
 # 		kmeans_seg(image, filename, outputpath)
 
 # HSV based dominant color extraction
-img = cv2.imread('/Users/yiyi/vsr-api-2/vsr-api/api/alpha/dataset/10160545.jpg')
+img = cv2.imread('/Users/yiyi/vsr-api-2/vsr-api/data/image/sample/10362354_10362354.jpg')
 height, width, _ = np.shape(img)
 
 # reshape the image to be a simple list of RGB pixels
 image = img.reshape((height * width, 3))
 
 # we'll pick the 5 most common colors
-num_clusters = 5
+num_clusters = 10
 clusters = KMeans(n_clusters=num_clusters)
 clusters.fit(image)
 
@@ -129,8 +141,8 @@ cv2.imshow(f'{num_clusters} Most Common Colors', np.hstack(bars))
 # cv2.waitKey(0)
 
 for mc_hsv in hsv_values:
-	upper = tuple((mc_hsv[0]+1., 225., 225.))
-	lower = tuple((mc_hsv[0]-1., 30., 30.))
+	upper = tuple((mc_hsv[0]+12., 225., 225.))
+	lower = tuple((mc_hsv[0]-12., 30., 30.))
 	# pdb.set_trace()
 	hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 	mask = cv2.inRange(hsv_img, lower, upper)
