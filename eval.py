@@ -221,7 +221,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         if num_dets_to_consider > 1:
             inv_alph_cumul = inv_alph_masks[:(num_dets_to_consider-1)].cumprod(dim=0)
             # TEST segmentation per item
-            item_seg = seg_masks.prod(dim=0)
+            item_seg = seg_masks[1:].prod(dim=0)
             item_seg = (item_seg * 255).byte().cpu().numpy()
             seg_path = seg_path[:-4] + "_" + str(random.randint(0, 1024)) + seg_path[-4:]
             cv2.imwrite(seg_path, item_seg)
