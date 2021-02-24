@@ -195,12 +195,12 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         masks = masks[:num_dets_to_consider, :, :, None]
         
         # TESTING
-        # seg_masks = copy.deepcopy(masks)
+        seg_masks = copy.deepcopy(masks)
         # img_seg = img_gpu * seg_masks.prod(dim=0)
         # img_seg = (img_seg * 255).byte().cpu().numpy()
         # seg_path = seg_path[:-4] + "_" + str(random.randint(0, 1024)) + seg_path[-4:]
         # cv2.imwrite(seg_path, img_seg)
-        
+
         # TODO: Save segmentations by thread ID.
         # seg_masks[seg_masks==1] = 2
         # seg_masks[seg_masks==0] = 1
@@ -224,7 +224,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
             item_seg = seg_masks[:(num_dets_to_consider-1)].cumprod(dim=0)
             item_seg = (item_seg * 255).byte().cpu().numpy()
             seg_path = seg_path[:-4] + "_" + str(random.randint(0, 1024)) + seg_path[-4:]
-            cv2.imwrite(seg_path, img_seg)
+            cv2.imwrite(seg_path, item_seg)
             # TEST
             masks_color_cumul = masks_color[1:] * inv_alph_cumul
             masks_color_summand += masks_color_cumul.sum(dim=0)
