@@ -193,7 +193,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
     if args.display_masks and cfg.eval_mask_branch and num_dets_to_consider > 0:
         # After this, mask is of size [num_dets, h, w, 1]
         masks = masks[:num_dets_to_consider, :, :, None]
-        
+        pdb.set_trace()
         # TESTING
         seg_masks = copy.deepcopy(masks)
         # img_seg = img_gpu * seg_masks.prod(dim=0)
