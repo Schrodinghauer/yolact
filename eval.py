@@ -198,7 +198,7 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
         seg_masks = copy.deepcopy(masks)
         img_seg = img_gpu * seg_masks.prod(dim=0)
         img_seg = (img_seg * 255).byte().cpu().numpy()
-        seg_path = seg_path[:-4] + "_" + str(random.randint(0, 1024)) + seg_path[-4:]
+        seg_path = seg_path[:-4] + "_" + "all_masks" + seg_path[-4:]
         cv2.imwrite(seg_path, img_seg)
 
         # Prepare the RGB images for each mask given their color (size [num_dets, h, w, 1])
