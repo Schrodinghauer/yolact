@@ -223,7 +223,11 @@ def prep_display(dets_out, img, h, w, undo_transform=True, class_color=False, ma
             # TEST
             masks_color_cumul = masks_color[1:] * inv_alph_cumul
             masks_color_summand += masks_color_cumul.sum(dim=0)
-
+        else:
+            img_seg = img_gpu * seg_masks.prod(dim=0)
+            img_seg = (img_seg * 255).byte().cpu().numpy()
+            path = seg_path[:-4] + "_0" + seg_path[-4:]
+            cv2.imwrite(path, img_seg)
         del seg_masks
         img_gpu = img_gpu * inv_alph_masks.prod(dim=0) + masks_color_summand
 
